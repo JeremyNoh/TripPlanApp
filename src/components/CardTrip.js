@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   Platform,
-  Animated,
   TouchableOpacity,
   Image
 } from "react-native";
@@ -16,7 +15,6 @@ import {
   nbrScale
 } from "../../utils/calculDistance";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { RectButton } from "react-native-gesture-handler/GestureHandler";
 import { iconActions } from "../../assets/icons";
 
 export const CardTrip = ({ props, onPress, onLongPress, deletePress }) => {
@@ -35,20 +33,12 @@ export const CardTrip = ({ props, onPress, onLongPress, deletePress }) => {
     });
     return (
       <TouchableOpacity
-        style={styles.leftAction}
+        style={[styles.leftAction, { transform: [{ translateX: trans }] }]}
         onPress={() => {
           deletePress();
         }}
       >
-        <Animated.Image
-          source={iconActions["trash"]}
-          style={[
-            {
-              transform: [{ translateX: trans }]
-            },
-            styles.sizeImg
-          ]}
-        />
+        <Image source={iconActions["trash"]} style={styles.sizeImg} />
       </TouchableOpacity>
     );
   };
