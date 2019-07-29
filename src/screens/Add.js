@@ -5,7 +5,8 @@ import {
   View,
   ActivityIndicator,
   Alert,
-  Image
+  Image,
+  AsyncStorage
 } from "react-native";
 import { withNavigation } from "react-navigation";
 import MapView, { Marker, Polyline, Callout } from "react-native-maps";
@@ -13,22 +14,30 @@ import * as Animatable from "react-native-animatable";
 
 // Internal  Component | Function
 import { mainColor } from "../../utils/colors";
-import { iconActions, iconPins } from "../../assets/icons";
+import { iconPins } from "../../assets/icons";
 import { PromptScale } from "../components/PromptScale";
 import FabSettings from "../components/FabSettings";
 import Container from "../components/Container";
-import { transformArrayForCordinate } from "../../utils/calculDistance";
+import {
+  transformArrayForCordinate,
+  randomId
+} from "../../utils/calculDistance";
 import DistanceButton from "../components/DistanceCard";
 
 function Detail({ navigation }) {
+  // init markers from Params
+  initMarkers = () => {
+    let trip = navigation.getParam("tripParam", {});
+    return trip.hasOwnProperty("markers") ? trip.markers : [];
+  };
   // for settup ComponentDidMount()
   const [firstInApp, setFirstInApp] = useState(true);
 
   // postion of the user
   const [InitialRegion, setInitialRegion] = useState(undefined);
 
+  const [Markers, setMarkers] = useState(initMarkers());
   // Postion of the Marker
-  const [Markers, setMarkers] = useState([]);
 
   //Info of My pin
   const [InfoScale, setInfoScale] = useState({
@@ -41,6 +50,7 @@ function Detail({ navigation }) {
   useEffect(() => {
     //   ComponentDidMount
     if (firstInApp) {
+      // AsyncStorage.clear();
       permissionLocation();
       setFirstInApp(false);
     }
@@ -114,7 +124,6 @@ function Detail({ navigation }) {
     let markers = Markers;
     markers[markers.length - 1].info = ObjInfoScale;
     setMarkers([...markers]);
-    console.log(markers);
   };
 
   // ask Permission
@@ -143,9 +152,7 @@ function Detail({ navigation }) {
     alertChoicePins(pin);
   };
 
-  const onMarkerPress = e => {
-    console.log("deddede");
-  };
+  const onMarkerPress = e => {};
 
   // Action of All Icon Settings
   actionDispatch = status => {
@@ -156,7 +163,40 @@ function Detail({ navigation }) {
       markers.pop();
       setMarkers(markers);
     } else if (status === "finish") {
-      console.log("heheheeh finish");
+      let trip = navigation.getParam("tripParam", {});
+
+      // load the Obj for Push
+      let ObjFinish = {
+        name: trip.name,
+        markers: Markers,
+        id: trip.hasOwnProperty("id") ? trip["id"] : randomId()
+      };
+
+      // retrieve info From AsyncStorage
+      AsyncStorage.getItem("infoTrip", (err, result) => {
+        let infoTrip = JSON.parse(result);
+        let data = [];
+
+        // if AsyncStorage not Empty
+        if (infoTrip) {
+          const ExistElementIndex = infoTrip.findIndex(el => {
+            return el.id === ObjFinish.id;
+          });
+          // d'ont exist on LocalStorage
+          if (ExistElementIndex === -1) {
+            data = [...infoTrip, ObjFinish];
+          } else {
+            data = infoTrip;
+            data[ExistElementIndex] = ObjFinish;
+          }
+        } else {
+          data = [ObjFinish];
+        }
+
+        AsyncStorage.setItem("infoTrip", JSON.stringify(data), () => {
+          navigation.goBack();
+        });
+      });
     }
   };
 
@@ -266,7 +306,7 @@ const styles = StyleSheet.create({
 });
 
 Detail.navigationOptions = ({ navigation }) => ({
-  title: navigation.getParam("NameTrip", "TripName"),
+  title: navigation.getParam("tripParam", "TripName").name,
   headerTintColor: "black",
   headerStyle: {
     backgroundColor: "blueviolet"

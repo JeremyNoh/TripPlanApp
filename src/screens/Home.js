@@ -22,7 +22,7 @@ function Home({ navigation }) {
     //   ComponentDidMount
     if (firstInApp) {
       getTrip();
-      navigation.navigate("Add");
+      // navigation.navigate("Add");
       setFirstInApp(false);
     }
   });
@@ -30,9 +30,7 @@ function Home({ navigation }) {
   const getTrip = async () => {
     const infoTripJson = await AsyncStorage.getItem("infoTrip");
     let infoTrip = JSON.parse(infoTripJson);
-    // console.log(infoTrip);
-
-    setInfoTrip([1, 2, 3, 4]);
+    setInfoTrip(infoTrip);
   };
   if (InfoTrip === undefined) {
     return <AppLoading />;
@@ -52,7 +50,10 @@ function Home({ navigation }) {
               key={index}
               props={element}
               onPress={() => {
-                navigation.navigate("Detail", { InfoOnetrip: element });
+                navigation.navigate("Detail", { tripParam: element });
+              }}
+              onLongPress={() => {
+                navigation.navigate("Add", { tripParam: element });
               }}
             />
           );
@@ -86,7 +87,7 @@ function Home({ navigation }) {
         placeholder="Entre du Texte"
         onSubmit={() => {
           setNameTrip({ ...NameTrip, isVisibleModal: false });
-          navigation.navigate("Add", { NameTrip: NameTrip.name });
+          navigation.navigate("Add", { tripParam: { name: NameTrip.name } });
         }}
       />
       <AddButton onPress={() => setNameTrip({ isVisibleModal: true })} />

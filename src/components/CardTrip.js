@@ -8,8 +8,21 @@ import {
   Platform
 } from "react-native";
 import { ListItem } from "react-native-elements";
+import {
+  transformArrayForCordinate,
+  allDistance,
+  nbrScale
+} from "../../utils/calculDistance";
 
-export const CardTrip = ({ props, onPress }) => {
+export const CardTrip = ({ props, onPress, onLongPress }) => {
+  // for the Distance
+  const markersFormat = transformArrayForCordinate(props.markers);
+  const distance = allDistance(markersFormat);
+
+  const nbScale = nbrScale(props.markers);
+
+  // for nbr obstacle
+
   return (
     <View
       style={{
@@ -32,7 +45,7 @@ export const CardTrip = ({ props, onPress }) => {
           friction={90}
           tension={100}
           activeScale={0.95}
-          title={"nom de la Course".toUpperCase()}
+          title={props["name"].toUpperCase()}
           linearGradientProps={{
             colors: ["white", "white"],
             start: [1, 0],
@@ -57,8 +70,10 @@ export const CardTrip = ({ props, onPress }) => {
                 }}
               />
               <View style={styles.subtitleView}>
-                <Text style={styles.ratingText}>19 Km</Text>
-                <Text style={styles.ratingText}>0 obstacle</Text>
+                <Text style={styles.ratingText}>{distance}</Text>
+                <Text style={styles.ratingText}>
+                  {nbScale} obstacle{nbScale > 1 ? "s" : null}
+                </Text>
               </View>
             </View>
           }
@@ -68,6 +83,7 @@ export const CardTrip = ({ props, onPress }) => {
             borderRadius: Platform.OS === "android" ? 10 : 10
           }}
           onPress={() => onPress()}
+          onLongPress={() => onLongPress()}
         />
       </View>
     </View>

@@ -66,3 +66,19 @@ export const transformArrayForCordinate = val => {
   });
   return res;
 };
+
+export const nbrScale = arr => {
+  let arrScale = arr.filter(el => el.status === "scale");
+  return arrScale.length;
+};
+
+export const randomId = () => {
+  return (
+    Math.random()
+      .toString(36)
+      .substring(2, 15) +
+    Math.random()
+      .toString(36)
+      .substring(2, 15)
+  );
+};
