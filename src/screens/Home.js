@@ -22,7 +22,7 @@ function Home({ navigation }) {
     //   ComponentDidMount
     if (firstInApp) {
       getTrip();
-      // navigation.navigate("Add");
+      navigation.navigate("Add");
       setFirstInApp(false);
     }
   });
@@ -30,7 +30,7 @@ function Home({ navigation }) {
   const getTrip = async () => {
     const infoTripJson = await AsyncStorage.getItem("infoTrip");
     let infoTrip = JSON.parse(infoTripJson);
-    console.log(infoTrip);
+    // console.log(infoTrip);
 
     setInfoTrip([1, 2, 3, 4]);
   };

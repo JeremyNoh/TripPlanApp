@@ -9,10 +9,16 @@ import {
 } from "react-native";
 import { withNavigation } from "react-navigation";
 import MapView, { Marker, Polyline, Callout } from "react-native-maps";
+import * as Animatable from "react-native-animatable";
+
+// Internal  Component | Function
 import { mainColor } from "../../utils/colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { iconActions, iconPins } from "../../assets/icons";
 import { PromptScale } from "../components/PromptScale";
+import FabSettings from "../components/FabSettings";
+import Container from "../components/Container";
+import { transformArrayForCordinate } from "../../utils/calculDistance";
+import DistanceButton from "../components/DistanceCard";
 
 function Detail({ navigation }) {
   // for settup ComponentDidMount()
@@ -29,6 +35,9 @@ function Detail({ navigation }) {
     isVisibleModal: false
   });
 
+  // Trigger if BottomMenu is actived
+  const [ActiveMenu, setActiveMenu] = useState(false);
+
   useEffect(() => {
     //   ComponentDidMount
     if (firstInApp) {
@@ -37,47 +46,56 @@ function Detail({ navigation }) {
     }
   });
 
-  alertChangeLangue = pin => {
-    const questionAlert = [
-      Markers.length === 0
-        ? {
-            text: `Départ`,
-            onPress: () => {
-              escalePins(pin, "home");
-            }
-          }
-        : {
+  // Alert for user choose Pins in Maps
+  alertChoicePins = pin => {
+    const questionAlert = [];
+    if (Markers.length === 0) {
+      questionAlert.push({
+        text: `Départ`,
+        onPress: () => {
+          escalePins(pin, "home");
+        }
+      });
+    } else {
+      questionAlert.push(
+        ...[
+          {
             text: `Faire Un Escale`,
             onPress: () => {
               escalePins(pin, "scale");
             }
           },
-      {
-        text: `Ajuster Ton Chemin`,
-        onPress: () => {
-          escalePins(pin, "ajust");
-        }
-      },
-      {
-        text: `Arriver`,
-        onPress: () => {
-          escalePins(pin, "last");
-        }
-      },
-      {
-        text: `Annuler`,
-        onPress: () => {}
-      }
-    ];
+          {
+            text: `Ajuster Ton Chemin`,
+            onPress: () => {
+              escalePins(pin, "ajust");
+            }
+          },
+          {
+            text: `Arriver`,
+            onPress: () => {
+              escalePins(pin, "last");
+            }
+          }
+        ]
+      );
+    }
+
+    questionAlert.push({
+      text: `Annuler`,
+      onPress: () => {}
+    });
 
     Alert.alert("Que veux-tu faire ?", "", questionAlert, { cancelable: true });
   };
 
+  // setInfo status in Pin
   const escalePins = (pin, status) => {
     if (status === "home") {
       pin.pin = "pin_home";
     } else if (status === "scale") {
       pin.pin = "pin_scale";
+      setInfoScale({ isVisibleModal: true });
     } else if (status === "ajust") {
       pin.pin = "pin2";
     } else if (status === "last") {
@@ -87,7 +105,17 @@ function Detail({ navigation }) {
     setMarkers([...Markers, pin]);
   };
 
-  const deleteLastPin = () => {};
+  // set Name and Description on the ScalePin
+  const infoPins = () => {
+    let ObjInfoScale = {
+      description: InfoScale.description,
+      name: InfoScale.name
+    };
+    let markers = Markers;
+    markers[markers.length - 1].info = ObjInfoScale;
+    setMarkers([...markers]);
+    console.log(markers);
+  };
 
   // ask Permission
   const permissionLocation = () => {
@@ -108,28 +136,28 @@ function Detail({ navigation }) {
     );
   };
 
-  const transformArrayForPolyline = val => {
-    if (val.length === 0) {
-      return [];
-    }
-    const res = val.map(el => {
-      return {
-        latitude: el.coordinate.latitude,
-        longitude: el.coordinate.longitude
-      };
-    });
-    return res;
-  };
-
-  const handlePress = e => {
+  const clickOnMap = e => {
     let pin = {
       coordinate: e.nativeEvent.coordinate
     };
-    alertChangeLangue(pin);
+    alertChoicePins(pin);
   };
 
   const onMarkerPress = e => {
     console.log("deddede");
+  };
+
+  // Action of All Icon Settings
+  actionDispatch = status => {
+    if (status === "trash") {
+      setMarkers([]);
+    } else if (status === "goBack") {
+      let markers = Markers;
+      markers.pop();
+      setMarkers(markers);
+    } else if (status === "finish") {
+      console.log("heheheeh finish");
+    }
   };
 
   // LoadPMap
@@ -140,10 +168,9 @@ function Detail({ navigation }) {
       </View>
     );
   }
-  console.log(InfoScale);
 
   return (
-    <>
+    <Container style={{ backgroundColor: mainColor }}>
       <PromptScale
         isVisible={InfoScale.isVisibleModal}
         onChangeText={(value, status) => {
@@ -154,15 +181,16 @@ function Detail({ navigation }) {
         }}
         onSubmit={() => {
           setInfoScale({ ...InfoScale, isVisibleModal: false });
+          infoPins();
         }}
       />
       <MapView
-        style={styles.mapStyle}
+        style={[styles.mapStyle, { bottom: ActiveMenu ? 100 : 50 }]}
         initialRegion={InitialRegion}
         showsUserLocation
         loadingEnabled
         followUserLocation
-        onPress={handlePress}
+        onPress={clickOnMap}
       >
         {Markers.map((marker, index) => {
           return (
@@ -175,18 +203,20 @@ function Detail({ navigation }) {
                   onMarkerPress(i);
                 }}
               />
-              <Callout>
-                <View {...marker} style={styles.marker}>
-                  <Text style={styles.text}>Title pin</Text>
-                </View>
-              </Callout>
+              {marker.info && (
+                <Callout>
+                  <View {...marker} style={styles.marker}>
+                    <Text style={styles.text}>{marker.info.name}</Text>
+                  </View>
+                </Callout>
+              )}
             </Marker>
           );
         })}
 
         {Markers && (
           <Polyline
-            coordinates={transformArrayForPolyline(Markers)}
+            coordinates={transformArrayForCordinate(Markers)}
             strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
             strokeColors={[
               "#7F0000",
@@ -200,7 +230,13 @@ function Detail({ navigation }) {
           />
         )}
       </MapView>
-    </>
+      <FabSettings
+        onPress={status => {
+          setActiveMenu(!ActiveMenu), actionDispatch(status);
+        }}
+      />
+      <DistanceButton markers={transformArrayForCordinate(Markers)} />
+    </Container>
   );
 }
 
@@ -215,7 +251,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    bottom: 0,
+    bottom: 100,
     position: "absolute"
   },
   marker: {
