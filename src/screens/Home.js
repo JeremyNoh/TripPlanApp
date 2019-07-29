@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, AsyncStorage, ScrollView } from "react-native";
-import { withNavigation } from "react-navigation";
+import { withNavigation, NavigationEvents } from "react-navigation";
 import { AppLoading } from "expo";
 import Container from "../components/Container";
 import Title from "../components/Title";
@@ -18,12 +18,19 @@ function Home({ navigation }) {
     isVisibleModal: false
   });
 
+  const [CanRefreshTrip, setCanRefreshTrip] = useState(false);
+
   useEffect(() => {
     //   ComponentDidMount
     if (firstInApp) {
       getTrip();
       // navigation.navigate("Add");
       setFirstInApp(false);
+    }
+
+    if (CanRefreshTrip) {
+      getTrip();
+      setCanRefreshTrip(false);
     }
   });
 
@@ -67,6 +74,9 @@ function Home({ navigation }) {
       <View style={styles.container}>
         <Title title={"Tes Trajets"} />
       </View>
+      <NavigationEvents
+        onWillFocus={() => setCanRefreshTrip(!CanRefreshTrip)}
+      />
 
       {InfoTrip ? (
         listTrip()
