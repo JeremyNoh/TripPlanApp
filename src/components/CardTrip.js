@@ -4,8 +4,10 @@ import {
   View,
   StyleSheet,
   Text,
-  TouchableHighlight,
-  Platform
+  Platform,
+  Animated,
+  TouchableOpacity,
+  Image
 } from "react-native";
 import { ListItem } from "react-native-elements";
 import {
@@ -13,8 +15,11 @@ import {
   allDistance,
   nbrScale
 } from "../../utils/calculDistance";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { RectButton } from "react-native-gesture-handler/GestureHandler";
+import { iconActions } from "../../assets/icons";
 
-export const CardTrip = ({ props, onPress, onLongPress }) => {
+export const CardTrip = ({ props, onPress, onLongPress, deletePress }) => {
   // for the Distance
   const markersFormat = transformArrayForCordinate(props.markers);
   const distance = allDistance(markersFormat);
@@ -22,6 +27,31 @@ export const CardTrip = ({ props, onPress, onLongPress }) => {
   const nbScale = nbrScale(props.markers);
 
   // for nbr obstacle
+
+  renderLeftActions = (progress, dragX) => {
+    const trans = dragX.interpolate({
+      inputRange: [0, 50, 100, 101],
+      outputRange: [-20, 0, 0, 1]
+    });
+    return (
+      <TouchableOpacity
+        style={styles.leftAction}
+        onPress={() => {
+          deletePress();
+        }}
+      >
+        <Animated.Image
+          source={iconActions["trash"]}
+          style={[
+            {
+              transform: [{ translateX: trans }]
+            },
+            styles.sizeImg
+          ]}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View
@@ -41,50 +71,52 @@ export const CardTrip = ({ props, onPress, onLongPress }) => {
           shadowRadius: 10
         }}
       >
-        <ListItem
-          friction={90}
-          tension={100}
-          activeScale={0.95}
-          title={props["name"].toUpperCase()}
-          linearGradientProps={{
-            colors: ["white", "white"],
-            start: [1, 0],
-            end: [0.2, 0]
-          }}
-          titleStyle={{
-            color: "black",
-            fontWeight: "bold",
-            textAlign: "center"
-          }}
-          subtitleStyle={{ color: "black" }}
-          subtitle={
-            <View>
-              <View
-                style={{
-                  alignItems: "center",
-                  height: 3,
+        <Swipeable renderLeftActions={renderLeftActions}>
+          <ListItem
+            friction={90}
+            tension={100}
+            activeScale={0.95}
+            title={props["name"].toUpperCase()}
+            linearGradientProps={{
+              colors: ["white", "white"],
+              start: [1, 0],
+              end: [0.2, 0]
+            }}
+            titleStyle={{
+              color: "black",
+              fontWeight: "bold",
+              textAlign: "center"
+            }}
+            subtitleStyle={{ color: "black" }}
+            subtitle={
+              <View>
+                <View
+                  style={{
+                    alignItems: "center",
+                    height: 3,
 
-                  borderRadius: 20,
-                  marginVertical: 10,
-                  backgroundColor: "black"
-                }}
-              />
-              <View style={styles.subtitleView}>
-                <Text style={styles.ratingText}>{distance}</Text>
-                <Text style={styles.ratingText}>
-                  {nbScale} obstacle{nbScale > 1 ? "s" : null}
-                </Text>
+                    borderRadius: 20,
+                    marginVertical: 10,
+                    backgroundColor: "black"
+                  }}
+                />
+                <View style={styles.subtitleView}>
+                  <Text style={styles.ratingText}>{distance}</Text>
+                  <Text style={styles.ratingText}>
+                    {nbScale} Escale{nbScale > 1 ? "s" : null}
+                  </Text>
+                </View>
               </View>
-            </View>
-          }
-          containerStyle={{
-            borderColor: "black",
-            borderWidth: Platform.OS === "android" ? 1.5 : 0,
-            borderRadius: Platform.OS === "android" ? 10 : 10
-          }}
-          onPress={() => onPress()}
-          onLongPress={() => onLongPress()}
-        />
+            }
+            containerStyle={{
+              borderColor: "black",
+              borderWidth: Platform.OS === "android" ? 1.5 : 0,
+              borderRadius: Platform.OS === "android" ? 10 : 10
+            }}
+            onPress={() => onPress()}
+            onLongPress={() => onLongPress()}
+          />
+        </Swipeable>
       </View>
     </View>
   );
@@ -115,7 +147,18 @@ const styles = StyleSheet.create({
   ratingText: {
     fontWeight: "bold",
     color: "black"
-  }
+  },
+  leftAction: {
+    backgroundColor: "#b6075d",
+    borderColor: "black",
+    borderWidth: Platform.OS === "android" ? 1.5 : 0,
+    borderRadius: Platform.OS === "android" ? 10 : 10,
+    // alignItems: "center",
+    // alignContent: "center",
+    paddingLeft: 5,
+    justifyContent: "center"
+  },
+  sizeImg: { width: 40, height: 40 }
 });
 
 export default CardTrip;

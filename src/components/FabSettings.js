@@ -4,10 +4,6 @@ import * as Animatable from "react-native-animatable";
 
 import { iconActions } from "../../assets/icons";
 
-import { mainColor } from "../../utils/colors";
-
-const { height, width } = Dimensions.get("window");
-
 const FabSettings = ({ onPress }) => {
   const [IsActive, setIsActive] = useState(false);
   if (IsActive) {

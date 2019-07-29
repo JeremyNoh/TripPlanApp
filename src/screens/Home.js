@@ -34,6 +34,14 @@ function Home({ navigation }) {
     }
   });
 
+  const removeTrip = (trip, index) => {
+    let data = InfoTrip;
+    data.splice(index, 1);
+    AsyncStorage.setItem("infoTrip", JSON.stringify(data), () => {
+      getTrip();
+    });
+  };
+
   const getTrip = async () => {
     const infoTripJson = await AsyncStorage.getItem("infoTrip");
     let infoTrip = JSON.parse(infoTripJson);
@@ -61,6 +69,9 @@ function Home({ navigation }) {
               }}
               onLongPress={() => {
                 navigation.navigate("Add", { tripParam: element });
+              }}
+              deletePress={() => {
+                removeTrip(element, index);
               }}
             />
           );
