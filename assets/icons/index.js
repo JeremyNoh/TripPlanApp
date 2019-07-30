@@ -2,6 +2,7 @@
 import add from "./actions/add.png";
 import add2 from "./actions/add2.png";
 import arrow_right from "./actions/arrow_right.png";
+import arrow_left from "./actions/arrow_left.png";
 import goBack from "./actions/goBack.png";
 import goBack2 from "./actions/goBack2.png";
 import settings from "./actions/settings.png";
@@ -29,7 +30,8 @@ export const iconActions = {
   settings2,
   success,
   success2,
-  trash
+  trash,
+  arrow_left
 };
 
 export const iconPins = {

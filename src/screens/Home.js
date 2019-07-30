@@ -24,7 +24,6 @@ function Home({ navigation }) {
     //   ComponentDidMount
     if (firstInApp) {
       getTrip();
-      // navigation.navigate("Add");
       setFirstInApp(false);
     }
 
@@ -46,6 +45,9 @@ function Home({ navigation }) {
     const infoTripJson = await AsyncStorage.getItem("infoTrip");
     let infoTrip = JSON.parse(infoTripJson);
     setInfoTrip(infoTrip);
+
+    // FOR THE TEST
+    // navigation.navigate("Detail", { tripParam: infoTrip[0] });
   };
   if (InfoTrip === undefined) {
     return <AppLoading />;

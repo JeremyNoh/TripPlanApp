@@ -24,7 +24,7 @@ import {
 } from "../../utils/calculDistance";
 import DistanceButton from "../components/DistanceCard";
 
-function Detail({ navigation }) {
+function Add({ navigation }) {
   // init markers from Params
   initMarkers = () => {
     let trip = navigation.getParam("tripParam", {});
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   }
 });
 
-Detail.navigationOptions = ({ navigation }) => ({
+Add.navigationOptions = ({ navigation }) => ({
   title: navigation.getParam("tripParam", "TripName").name,
   headerTintColor: "black",
   headerStyle: {
@@ -313,4 +313,4 @@ Detail.navigationOptions = ({ navigation }) => ({
   }
 });
 
-export default withNavigation(Detail);
+export default withNavigation(Add);
