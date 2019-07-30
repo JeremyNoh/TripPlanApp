@@ -29,9 +29,12 @@ export const CardInfoPins = ({
     if (props.status === "scale") {
       return (
         <View style={[styles.flexMidRange, styles.titleCenter]}>
-          <Text style={styles.titleText}>{props.info.name || "Pause"}</Text>
+          <Text style={styles.titleText}>
+            {(props.info && props.info.name) || "Pause"}
+          </Text>
           <Text style={styles.ratingText}>
-            {props.info.description || "C'est la pause profites un peu..."}
+            {(props.info && props.info.description) ||
+              "C'est la pause profites un peu..."}
           </Text>
         </View>
       );
