@@ -9,7 +9,7 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import { ListItem } from "react-native-elements";
+
 import { iconActions } from "../../assets/icons";
 import {
   allDistance,
