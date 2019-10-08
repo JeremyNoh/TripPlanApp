@@ -137,12 +137,39 @@ function Add({ navigation }) {
           longitudeDelta: 0.0421
         };
         setInitialRegion(InitialRegion);
+        firstInYourLocation();
       },
       error => {
         console.log(error.message);
       },
       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 }
     );
+  };
+
+  //alert for start in position of the user
+  firstInYourLocation = () => {
+    setTimeout(() => {
+      Alert.alert(
+        "Voulez-vous commencer votre trajet à votre localisation ? ",
+        "",
+        [
+          { text: " Nop 😒 ", onPress: () => {} },
+          {
+            text: "Bonne idée 😁",
+            onPress: () =>
+              escalePins(
+                {
+                  coordinate: {
+                    latitude: InitialRegion.latitude,
+                    longitude: InitialRegion.longitude
+                  }
+                },
+                "home"
+              )
+          }
+        ]
+      );
+    }, 1000);
   };
 
   const clickOnMap = e => {
