@@ -137,7 +137,7 @@ function Add({ navigation }) {
           longitudeDelta: 0.0421
         };
         setInitialRegion(InitialRegion);
-        firstInYourLocation();
+        if(Markers.length === 0 ) firstInYourLocation();
       },
       error => {
         console.log(error.message);
@@ -252,7 +252,7 @@ function Add({ navigation }) {
         }}
       />
       <MapView
-        style={[styles.mapStyle, { bottom: ActiveMenu ? 100 : 50 }]}
+        style={[styles.mapStyle, { bottom: ActiveMenu ? 100 : 50, bottom : 0 }]}
         initialRegion={InitialRegion}
         showsUserLocation
         loadingEnabled
