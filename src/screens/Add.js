@@ -246,6 +246,7 @@ function Add({ navigation }) {
         onCancel={() => {
           setInfoScale({ isVisibleModal: false });
         }}
+        cancelText="Sans description"
         onSubmit={() => {
           setInfoScale({ ...InfoScale, isVisibleModal: false });
           infoPins();

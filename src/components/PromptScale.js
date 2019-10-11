@@ -26,6 +26,8 @@ export const PromptScale = ({
   btnStyle,
   btnTextStyle,
   promptAnimation = "fade",
+  cancelText ="Annuler",
+  onSubmitText = "Valider",
   ...inputProps
 }) => {
   return (
@@ -83,7 +85,8 @@ export const PromptScale = ({
               <Text
                 style={[{ color: primaryColor }, styles.btnTxt, btnTextStyle]}
               >
-                Annuler
+                {cancelText}
+
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -93,7 +96,7 @@ export const PromptScale = ({
               <Text
                 style={[{ color: primaryColor }, styles.btnTxt, btnTextStyle]}
               >
-                Valider
+                {onSubmitText}
               </Text>
             </TouchableOpacity>
           </View>
