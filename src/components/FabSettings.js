@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
 import * as Animatable from "react-native-animatable";
 
+const { height, width } = Dimensions.get("window");
+
 import { iconActions } from "../../assets/icons";
 
 const FabSettings = ({ onPress }) => {
-  const [IsActive, setIsActive] = useState(false);
+  const [IsActive, setIsActive] = useState(true);
   if (IsActive) {
     return (
       <>
@@ -19,7 +21,7 @@ const FabSettings = ({ onPress }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionButtonIcon, { right: 105 }]}
+          style={[styles.actionButtonIcon, { right: 15, bottom :  20 +55 + 50 }]}
           onPress={() => {
             setIsActive(false), onPress("finish");
           }}
@@ -28,7 +30,7 @@ const FabSettings = ({ onPress }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionButtonIcon, { right: 195 }]}
+          style={[styles.actionButtonIcon,  { right: 20 +55 +15  , bottom : 20 +50 +15  }]}
           onPress={() => {
             setIsActive(false), onPress("goBack");
           }}
@@ -37,7 +39,7 @@ const FabSettings = ({ onPress }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionButtonIcon, { right: 285 }]}
+          style={[styles.actionButtonIcon, { right: 20 +55 + 50 }]}
           onPress={() => {
             setIsActive(false), onPress("trash");
           }}
@@ -66,11 +68,11 @@ const styles = StyleSheet.create({
   actionButtonIcon: {
     alignItems: "center",
     justifyContent: "center",
-    width: 70,
+    width: 55,
+    height: 55,
     position: "absolute",
     bottom: 20,
-    right: 15,
-    height: 70,
+    right: 20,
     backgroundColor: "white",
     borderRadius: 100,
     shadowColor: "#000",
@@ -81,5 +83,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 1
   },
-  sizeImg: { width: 40, height: 40 }
+  sizeImg: { width: 30, height: 30 }
 });

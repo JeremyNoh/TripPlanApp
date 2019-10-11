@@ -47,7 +47,7 @@ function Home({ navigation }) {
     setInfoTrip(infoTrip);
 
     // FOR THE TEST
-    // navigation.navigate("Detail", { tripParam: infoTrip[0] });
+    // navigation.navigate("Add", { tripParam: infoTrip[0] });
   };
   if (InfoTrip === undefined) {
     return <AppLoading />;
