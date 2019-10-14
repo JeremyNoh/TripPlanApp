@@ -13,7 +13,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -24,7 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jeremynoh.tripplanapp"
+    },
+    "android": {
+      "package": "com.jeremynoh.tripplanapp",
+      "versionCode": 1
     },
     "description": "App permettant de créer des trajets circuit en amont",
     "githubUrl": "https://github.com/JeremyNoh/TripPlanApp"
