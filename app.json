@@ -25,6 +25,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "App permettant de créer des trajets circuit en amont",
+    "githubUrl": "https://github.com/JeremyNoh/TripPlanApp"
   }
 }

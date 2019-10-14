@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { withNavigation } from "react-navigation";
 import MapView, { Marker, Polyline, Callout } from "react-native-maps";
-import * as Animatable from "react-native-animatable";
 
 // Internal  Component | Function
 import { mainColor } from "../../utils/colors";
@@ -137,7 +136,7 @@ function Add({ navigation }) {
           longitudeDelta: 0.0421
         };
         setInitialRegion(InitialRegion);
-        if(Markers.length === 0 ) firstInYourLocation();
+        if (Markers.length === 0) firstInYourLocation();
       },
       error => {
         console.log(error.message);
@@ -253,7 +252,7 @@ function Add({ navigation }) {
         }}
       />
       <MapView
-        style={[styles.mapStyle, { bottom: ActiveMenu ? 100 : 50, bottom : 0 }]}
+        style={[styles.mapStyle, { bottom: ActiveMenu ? 100 : 50, bottom: 0 }]}
         initialRegion={InitialRegion}
         showsUserLocation
         loadingEnabled

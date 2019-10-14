@@ -225,7 +225,7 @@ Detail.navigationOptions = ({ navigation }) => ({
   title: navigation.getParam("tripParam", "TripName").name,
   headerTintColor: "black",
   headerStyle: {
-    backgroundColor: "blueviolet"
+    backgroundColor: mainColor
   }
 });
 
