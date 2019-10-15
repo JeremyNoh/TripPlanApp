@@ -65,6 +65,17 @@ que ce soit en issus / pull request soyez force de proposition, je vous répondr
 </details>
 
 
+## Télécharger sur Android 
+
+je vous invite à télécharger l'application  ➡️  <a href="./build/tripPlanApp.apk" download>disponible en apk </a>
+
+Pour l'installer l'app je vous invite à suivre la procédure d'installation d'une app android sans passer par le playstore  [voici un tuto](https://www.frandroid.com/comment-faire/tutoriaux/trucs-et-astuces/184151_comment-installer-un-fichier-apk-sur-son-terminal-android)
+
+## Télécharger sur IOS
+
+Malheuresement il faudra posséder Expo.. 
+je vous invite a vous rediriger sur cette page ➡️ [TripPlanAPP with Expo](https://expo.io/@djeblack/tripPlanApp)
+
 
 ## Exécution 
 
