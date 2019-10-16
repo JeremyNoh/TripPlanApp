@@ -66,6 +66,7 @@ function Home({ navigation }) {
             <CardTrip
               key={index}
               props={element}
+              number= {index}
               onPress={() => {
                 navigation.navigate("Detail", { tripParam: element });
               }}

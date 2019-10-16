@@ -17,13 +17,13 @@ import {
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { iconActions } from "../../assets/icons";
 
-export const CardTrip = ({ props, onPress, onLongPress, deletePress }) => {
+export const CardTrip = ({ props, onPress, onLongPress, deletePress, number}) => {
   // for the Distance
   const markersFormat = transformArrayForCordinate(props.markers);
   const distance = allDistance(markersFormat);
-
+  
   const nbScale = nbrScale(props.markers);
-
+  const  {name = `trajet n° ${number}`} = props
   // for nbr obstacle
 
   renderLeftActions = (progress, dragX) => {
@@ -66,7 +66,7 @@ export const CardTrip = ({ props, onPress, onLongPress, deletePress }) => {
             friction={90}
             tension={100}
             activeScale={0.95}
-            title={props["name"].toUpperCase()}
+            title={name.toUpperCase()}
             linearGradientProps={{
               colors: ["white", "white"],
               start: [1, 0],
