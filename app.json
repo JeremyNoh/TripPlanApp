@@ -29,6 +29,11 @@
     },
     "android": {
       "package": "com.jeremynoh.tripplanapp",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCp-BUoX8B8699rkbnb2P2CK4gXSeesVcc"
+        }
+      },
       "versionCode": 1
     },
     "description": "App permettant de créer des trajets circuit en amont",
