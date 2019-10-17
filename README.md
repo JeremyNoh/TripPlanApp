@@ -98,7 +98,7 @@ ENJOY 🙂
 - <details>
     <summary>1 Collaboration</summary>
     
-    Bien que la conception et la réalisation de ce projet  a été réalisé par moi-même l'idée de base m'a été proposée par : [Cindy DLF](https:/github.com/cindyDLF)
+    Bien que la conception et la réalisation de ce projet  a été réalisé par moi-même l'idée de base m'a été proposée par : [Cindy DLF](https://github.com/cindyDLF)
     
     </details>
 
